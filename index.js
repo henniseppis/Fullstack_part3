@@ -7,6 +7,7 @@ const cors = require('cors')
 app.use(cors())
 
 app.use(morgan('tiny'))
+app.use(express.static('dist'))
 
 let persons = [
   {
