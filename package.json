@@ -7,13 +7,12 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "rm -rf dist && cd ~/Fullstack-course/osa2/puhelinluettelo && npm run build && cp -r dist ~/Fullstack_part3/",
+    "build:ui": "rm -rf dist && cd ~/Fullstack-course/osa3/puhelinluettelo && npm run build && cp -r dist ~/Fullstack_part3/",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "author": "henni",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^4.21.2",
     "morgan": "^1.10.0"
   }
