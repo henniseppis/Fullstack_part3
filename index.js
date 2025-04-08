@@ -2,10 +2,12 @@ const express = require('express')
 const  morgan = require('morgan')
 const app = express()
 app.use(express.json())
-
-
 app.use(morgan('tiny'))
 app.use(express.static('dist'))
+const Person = require('./models/person')
+
+
+
 
 let persons = [
   {
@@ -35,9 +37,12 @@ let persons = [
   }
 ]
 
-app.get("/api/persons", (request, response) => {
-  response.json(persons)
-})
+app.get('/api/persons', (request, response) => {
+  Person.find({}).then(people => {
+      //console.log("Phonebook:")
+      response.json(people)
+    })
+  })
 
 app.get("/info", (request, response) => {
   const amount = persons.length
@@ -108,8 +113,26 @@ app.post('/api/persons', (request, response) => {
 })
 
 
-
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
+
+
+
+
+
+//if (process.argv[3] != null && process.argv[4] != null) {
+//    const person = new Person({
+//        name: `${name}`,
+//        number: `${number}`,
+//      })
+//      
+//    person.save().then(result => {
+//        console.log(`added ${person.name} number ${person.number} to phonebook`)
+//        mongoose.connection.close()
+//      })
+//} else {
+//
+
