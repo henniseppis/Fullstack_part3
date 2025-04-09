@@ -1,17 +1,14 @@
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
 
-if (process.argv.length < 3) {
-  console.log('give password as argument')
-  process.exit(1)
-}
 
-const password = process.argv[2]
-const name = process.argv[3]
-const number  = process.argv[4]
+
+//const password = process.argv[2]
+//const name = process.argv[3]
+//const number  = process.argv[4]
 
 const url = process.env.MONGODB_URI
-//const url = `mongodb+srv://henniseppanen:${password}@cluster0.g3k7brk.mongodb.net/phoneApp?retryWrites=true&w=majority&appName=Cluster0`
+//rendervalue = 957e74916ab80bbb264049e4ca64b37c
 
 console.log('connecting to', url)
 mongoose.connect(url)
@@ -23,9 +20,16 @@ mongoose.connect(url)
       })
 
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
-})
+  name: {
+    type: String,
+    minlength: 2,
+    required: true
+  },
+  number: {
+    type: String,
+    minlength: 2,
+    required: true
+}})
 
 personSchema.set('toJSON', {
     transform: (document, returnedObject) => {
@@ -37,6 +41,7 @@ personSchema.set('toJSON', {
   
 
 module.exports = mongoose.model('Person', personSchema)
+
 
 //if (process.argv[3] != null && process.argv[4] != null) {
 //    const person = new Person({
