@@ -1,14 +1,7 @@
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
 
-
-
-//const password = process.argv[2]
-//const name = process.argv[3]
-//const number  = process.argv[4]
-
 const url = process.env.MONGODB_URI
-//rendervalue = 957e74916ab80bbb264049e4ca64b37c
 
 console.log('connecting to', url)
 mongoose.connect(url)
@@ -22,13 +15,20 @@ mongoose.connect(url)
 const personSchema = new mongoose.Schema({
   name: {
     type: String,
-    minlength: 2,
-    required: true
+    minlength: [3, "Name must be at least 3 characters"],
+    required: [true, "Name is required"]
   },
   number: {
     type: String,
-    minlength: 2,
-    required: true
+    minlength: [8, "Number must be at least 8 characters"],
+    validate: {
+      validator: function(v) {
+        return /^\d{3}-\d+$/.test(v) ||
+        /^\d{2}-\d+$/.test(v);
+      },
+      message: props => `${props.value} is not a valid phone number!`
+    },
+    required: [true, "Number is required"]
 }})
 
 personSchema.set('toJSON', {
@@ -41,25 +41,3 @@ personSchema.set('toJSON', {
   
 
 module.exports = mongoose.model('Person', personSchema)
-
-
-//if (process.argv[3] != null && process.argv[4] != null) {
-//    const person = new Person({
-//        name: `${name}`,
-//        number: `${number}`,
-//      })
-//      
-//    person.save().then(result => {
-//        console.log(`added ${person.name} number ${person.number} to phonebook`)
-//        mongoose.connection.close()
-//      })
-//} else {
-//
-//Person.find({}).then(result => {
-//    console.log("Phonebook:")
-//    result.forEach(person => {
-//        console.log(`${person.name} ${person.number}`)
-//    })
-//    mongoose.connection.close()
-//  })
-//}
