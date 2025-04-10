@@ -20,36 +20,36 @@ const errorHandler = (error, request, response, next) => {
 
 app.get('/api/persons', (request, response, next) => {
   Person.find({}).then(person => {
-      response.json(person)
-    })
+    response.json(person)
+  })
     .catch(error => next(error))
-  })
+})
 
 
-app.get("/info", (request, response) => {
-  const date = new Date();
+app.get('/info', (request, response) => {
+  const date = new Date()
   Person.countDocuments({})
-  .then(result => {
-    const amount = result
-    response.send(`<h2>Phonebook has info for ${amount} people </h2><p> ${date} </p>`)
-  })
+    .then(result => {
+      const amount = result
+      response.send(`<h2>Phonebook has info for ${amount} people </h2><p> ${date} </p>`)
+    })
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
-  .then(person => {
-    if (person) {
+    .then(person => {
+      if (person) {
         response.json(person)
       } else {
         response.status(404).end()
       }
-  })
-  .catch(error => next(error))
-  })
+    })
+    .catch(error => next(error))
+})
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -57,29 +57,29 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
 app.put('/api/persons/:id',(request, response, next) => {
   Person.findByIdAndUpdate(request.params.id)
-  .then(person => {
-    person.name = request.body.name
-    person.number = request.body.number
+    .then(person => {
+      person.name = request.body.name
+      person.number = request.body.number
 
-    return person.save().then((updatedPerson) => {
-    response.json(updatedPerson)
-  })
-  .catch(error => next(error))
-})
+      return person.save().then((updatedPerson) => {
+        response.json(updatedPerson)
+      })
+        .catch(error => next(error))
+    })
 })
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
   if (!body.name) {
-    return response.status(400).json({ 
-      error: 'name required' 
+    return response.status(400).json({
+      error: 'name required'
     })
   }
 
   if (!body.number) {
-    return response.status(400).json({ 
-      error: 'number required' 
+    return response.status(400).json({
+      error: 'number required'
     })
   }
 
@@ -92,7 +92,7 @@ app.post('/api/persons', (request, response, next) => {
     console.log(`added ${person.name} number ${person.number} to phonebook`)
     response.json(addedPerson)
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
@@ -118,7 +118,7 @@ app.listen(PORT, () => {
 //        name: `${name}`,
 //        number: `${number}`,
 //      })
-//      
+//
 //    person.save().then(result => {
 //        console.log(`added ${person.name} number ${person.number} to phonebook`)
 //        mongoose.connection.close()
